@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
+from .models import Bill
+from .serializers import BillSerializer
 
-# Create your views here.
+
+class BillViewSet(viewsets.ModelViewSet):
+    queryset = Bill.objects.select_related(
+        "patient",
+        "appointment"
+    ).all()
+
+    serializer_class = BillSerializer
+    permission_classes = [IsAuthenticated]
